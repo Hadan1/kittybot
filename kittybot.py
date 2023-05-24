@@ -1,3 +1,4 @@
+import logging
 import requests
 import os
 
@@ -10,6 +11,10 @@ load_dotenv()
 
 secret_token = os.getenv('TOKEN')
 
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO)
+
 URL = 'https://api.thecatapi.com/v1/images/search'
 
 
@@ -17,7 +22,10 @@ def get_new_image():
     try:
         response = requests.get(URL)
     except Exception as error:
-        print(error)
+        # Печатать информацию в консоль теперь не нужно:
+        # всё необходимое будет в логах
+        # print(error)
+        logging.error(f'Ошибка при запросе к основному API: {error}')
         new_url = 'https://api.thedogapi.com/v1/images/search'
         response = requests.get(new_url)
 
